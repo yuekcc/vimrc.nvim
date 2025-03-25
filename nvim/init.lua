@@ -3,6 +3,15 @@ vim.opt.updatetime = 250
 vim.opt.timeoutlen = 500
 vim.opt.confirm = true
 
+vim.filetype.add({
+  extension = {
+    c3 = "c3",
+    c3i = "c3",
+    c3t = "c3",
+  },
+})
+
+
 -- [[ UI 设置]]
 
 vim.opt.number = true
@@ -89,6 +98,12 @@ vim.opt.rtp:prepend(lazypath)
 -- 设置插件
 require("lazy").setup({
     {
+        -- "folke/tokyonight.nvim",
+        "olimorris/onedarkpro.nvim",
+        lazy = false,
+        priority = 1000,
+    },
+    {
         "echasnovski/mini.pairs",
         version = '*',
         event = "VeryLazy",
@@ -103,14 +118,22 @@ require("lazy").setup({
     {
         'saghen/blink.cmp',
         version = '*',
-        event = "InsertEnter",
+        dependencies = {
+            'mikavilpas/blink-ripgrep.nvim',
+        },
         opts = {
             keymap = { preset = 'default' },
             appearance = {
                 use_nvim_cmp_as_default = true,
             },
             sources = {
-                default = { 'lsp', 'path', 'snippets', 'buffer' },
+                default = { 'lsp', 'path', 'snippets', 'buffer', 'ripgrep' },
+                providers = {
+                    ripgrep = {
+                        module = 'blink-ripgrep',
+                        name = 'Ripgrep',
+                    },
+                },
             },
             fuzzy = { implementation = 'prefer_rust_with_warning' },
         }
@@ -155,6 +178,16 @@ require("lazy").setup({
             if type(opts.ensure_installed) == "table" then
                 require('nvim-treesitter.configs').setup(opts)
             end
+            
+            local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+            parser_config.c3 = {
+                install_info = {
+                    url = "https://github.com/c3lang/tree-sitter-c3",
+                    files = {"src/parser.c", "src/scanner.c"},
+                    branch = "main",
+                },
+                filetype = "c3"
+            }
         end,
     },
     {
@@ -165,4 +198,11 @@ require("lazy").setup({
 vim.keymap.set('n', '<leader>ff', '<cmd>FzfLua files<cr>', { desc = "(f)ind (f)ile" })
 vim.keymap.set('n', '<leader>ss', '<cmd>FzfLua live_grep<cr>', { desc = '(s)earch (s)ring' })
 vim.keymap.set('n', '<leader>sw', '<cmd>FzfLua grep_cword<cr>', { desc = '(s)earch current (w)ord'})
+
+-- vim.cmd[[colorscheme tokyonight]]
+-- vim.cmd[[colorscheme onelight]]
+vim.cmd[[colorscheme onedark]]
+
+
+
 
