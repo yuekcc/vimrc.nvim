@@ -2,6 +2,7 @@ vim.opt.mouse = 'a'
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 500
 vim.opt.confirm = true
+vim.g.editorconfig = true
 
 vim.filetype.add({
   extension = {
@@ -175,11 +176,7 @@ require("lazy").setup({
             },
         },
         config = function(_, opts)
-            if type(opts.ensure_installed) == "table" then
-                require('nvim-treesitter.configs').setup(opts)
-            end
-            
-            local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+            local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
             parser_config.c3 = {
                 install_info = {
                     url = "https://github.com/c3lang/tree-sitter-c3",
@@ -188,6 +185,10 @@ require("lazy").setup({
                 },
                 filetype = "c3"
             }
+
+            if type(opts.ensure_installed) == "table" then
+                require('nvim-treesitter.configs').setup(opts)
+            end
         end,
     },
     {
