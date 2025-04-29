@@ -65,7 +65,7 @@ vim.keymap.set('i', '<C-d>', '<del>')
 
 vim.keymap.set('i', '<m-j>', '<up>')
 vim.keymap.set('i', '<m-k>', '<down>')
-vim.keymap.set('i', '<m-h>', 'left>')
+vim.keymap.set('i', '<m-h>', '<left>')
 vim.keymap.set('i', '<m-l>', '<right>')
 
 vim.keymap.set('i', '<S-cr>', '<esc>o')
@@ -99,8 +99,8 @@ vim.opt.rtp:prepend(lazypath)
 -- 设置插件
 require("lazy").setup({
     {
-        -- "folke/tokyonight.nvim",
-        "olimorris/onedarkpro.nvim",
+        "folke/tokyonight.nvim",
+        -- "olimorris/onedarkpro.nvim",
         lazy = false,
         priority = 1000,
     },
@@ -200,9 +200,9 @@ vim.keymap.set('n', '<leader>ff', '<cmd>FzfLua files<cr>', { desc = "(f)ind (f)i
 vim.keymap.set('n', '<leader>ss', '<cmd>FzfLua live_grep<cr>', { desc = '(s)earch (s)ring' })
 vim.keymap.set('n', '<leader>sw', '<cmd>FzfLua grep_cword<cr>', { desc = '(s)earch current (w)ord'})
 
--- vim.cmd[[colorscheme tokyonight]]
+vim.cmd[[colorscheme tokyonight]]
 -- vim.cmd[[colorscheme onelight]]
-vim.cmd[[colorscheme onedark]]
+-- vim.cmd[[colorscheme onedark]]
 
 
 
