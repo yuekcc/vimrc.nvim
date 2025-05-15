@@ -23,6 +23,7 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 vim.opt.foldenable = false
 vim.opt.foldnestmax = 1
+vim.opt.cmdheight = 0
 
 vim.opt.guifont = 'Maple Mono Normal NF CN:h13'
 
