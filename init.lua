@@ -12,7 +12,6 @@ vim.filetype.add({
   },
 })
 
-
 -- [[ UI 设置]]
 
 vim.opt.number = true
@@ -125,20 +124,7 @@ require("lazy").setup({
         },
         opts = {
             keymap = { 
-                preset = 'default',
-                ['<Tab>'] = {
-                    function (cmp)
-                        if cmp.snippet_active() then
-                            return cmp.accept()
-                        else
-                            return cmp.select_and_accept()
-                        end
-                    end
-                },
-                ['<S-Tab>'] = {
-                    'snippet_backward',
-                    'fallback'
-                },
+                preset = 'super-tab',
             },
             appearance = {
                 use_nvim_cmp_as_default = true,
