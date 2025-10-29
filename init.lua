@@ -24,7 +24,7 @@ vim.opt.foldenable = false
 vim.opt.foldnestmax = 1
 vim.opt.cmdheight = 0
 
-vim.opt.guifont = 'Maple Mono Normal NF CN:h13'
+vim.opt.guifont = 'Maple Mono Normal NL NF CN:h13'
 
 -- [[ 搜索设置 ]]
 vim.opt.ignorecase = true
@@ -97,7 +97,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- 设置插件
-require("lazy").setup({
+require("lazy").setup({ 
+    {
+        "Mofiqul/vscode.nvim",
+        lazy = false,
+        priority = 1000,
+    },
     {
         "folke/tokyonight.nvim",
         -- "olimorris/onedarkpro.nvim",
@@ -199,13 +204,14 @@ require("lazy").setup({
 })
 
 vim.keymap.set('n', '<leader>ff', '<cmd>FzfLua files<cr>', { desc = "(f)ind (f)ile" })
-vim.keymap.set('n', '<leader>ss', '<cmd>FzfLua live_grep<cr>', { desc = '(s)earch (s)ring' })
-vim.keymap.set('n', '<leader>sw', '<cmd>FzfLua grep_cword<cr>', { desc = '(s)earch current (w)ord'})
+vim.keymap.set('n', '<leader>fs', '<cmd>FzfLua live_grep<cr>', { desc = '(f)ind (s)tring' })
+vim.keymap.set('n', '<leader>fw', '<cmd>FzfLua grep_cword<cr>', { desc = '(f)ind current (w)ord'})
 
-vim.cmd[[colorscheme tokyonight]]
--- vim.cmd[[colorscheme onelight]]
--- vim.cmd[[colorscheme onedark]]
-
-
-
+vim.o.background = 'dark'
+-- vim.cmd[[colorscheme tokyonight]]
+vim.cmd[[colorscheme vscode]]
+if vim.g.neovide then
+    vim.o.background = 'light'
+    vim.cmd[[colorscheme vscode]]
+end
 
