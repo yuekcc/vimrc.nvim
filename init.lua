@@ -63,8 +63,8 @@ vim.keymap.set('i', '<C-a>', '<home>')
 vim.keymap.set('i', '<C-e>', '<end>')
 vim.keymap.set('i', '<C-d>', '<del>')
 
-vim.keymap.set('i', '<m-j>', '<up>')
-vim.keymap.set('i', '<m-k>', '<down>')
+vim.keymap.set('i', '<m-k>', '<up>')
+vim.keymap.set('i', '<m-j>', '<down>')
 vim.keymap.set('i', '<m-h>', '<left>')
 vim.keymap.set('i', '<m-l>', '<right>')
 
