@@ -140,12 +140,23 @@ require("lazy").setup({
         "Mofiqul/vscode.nvim",
         lazy = false,
         priority = 1000,
+        config = function()
+            vim.o.background = 'dark'
+            vim.cmd[[colorscheme vscode]]
+            if vim.g.neovide then
+                vim.o.background = 'light'
+                vim.cmd[[colorscheme vscode]]
+            end
+        end
     },
-    {
-        "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 1000,
-    },
+    -- {
+    --     "folke/tokyonight.nvim",
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         vim.cmd[[colorscheme tokyonight]]
+    --     end
+    -- },
     {
         "nvim-mini/mini.cursorword",
         version = '*',
@@ -197,11 +208,9 @@ require("lazy").setup({
     },
     {
         "nvim-treesitter/nvim-treesitter",
-        version = false,
+        branch = "master",
         build = ":TSUpdate",
-        event = "VeryLazy",
-        lazy = vim.fn.argc(-1) == 0,
-        cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+        lazy = false,
         opts = {
             highlight = { enable = true },
             indent = { enable = true },
@@ -255,12 +264,4 @@ require("lazy").setup({
 vim.keymap.set('n', '<leader>ff', '<cmd>FzfLua files<cr>', { desc = "(f)ind (f)ile" })
 vim.keymap.set('n', '<leader>fs', '<cmd>FzfLua live_grep<cr>', { desc = '(f)ind (s)tring' })
 vim.keymap.set('n', '<leader>fw', '<cmd>FzfLua grep_cword<cr>', { desc = '(f)ind current (w)ord'})
-
-vim.o.background = 'dark'
--- vim.cmd[[colorscheme tokyonight]]
-vim.cmd[[colorscheme vscode]]
-if vim.g.neovide then
-    vim.o.background = 'light'
-    vim.cmd[[colorscheme vscode]]
-end
 
