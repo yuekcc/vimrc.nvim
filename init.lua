@@ -62,31 +62,6 @@ vim.opt.smartcase = true
 
 vim.opt.wrap = false -- 自动折行
 
--- [[ 自动重新加载 ]]
--- copy from LazyVim
---local group = vim.api.nvim_create_augroup("LazyVim", { clear = true })
-local function augroup(name)
-  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
-end
-
--- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-  group = augroup("checktime"),
-  callback = function()
-    if vim.o.buftype ~= "nofile" then
-      vim.cmd("checktime")
-    end
-  end,
-})
-
--- Highlight on yank
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = augroup("highlight_yank"),
-  callback = function()
-    (vim.hl or vim.highlight).on_yank()
-  end,
-})
-
 -- [[ keymaps ]]
 
 vim.g.mapleader = ' '
@@ -208,52 +183,31 @@ require("lazy").setup({
     },
     {
         "nvim-treesitter/nvim-treesitter",
-        branch = "master",
+        branch = "main",
         build = ":TSUpdate",
         lazy = false,
         opts = {
             highlight = { enable = true },
             indent = { enable = true },
-            ensure_installed = {
-                "bash",
-                "c",
-                "diff",
-                "html",
-                "javascript",
-                "jsdoc",
-                "json",
-                "jsonc",
-                "lua",
-                "luadoc",
-                "markdown",
-                "markdown_inline",
-                "printf",
-                "python",
-                "query",
-                "regex",
-                "toml",
-                "tsx",
-                "typescript",
-                "vim",
-                "vimdoc",
-                "xml",
-                "yaml",
-            },
         },
         config = function(_, opts)
-            local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-            parser_config.c3 = {
-                install_info = {
-                    url = "https://github.com/c3lang/tree-sitter-c3",
-                    files = {"src/parser.c", "src/scanner.c"},
-                    branch = "main",
-                },
-                filetype = "c3"
-            }
+            local nvim_treesitter = require "nvim-treesitter"
+            nvim_treesitter.setup()
 
-            if type(opts.ensure_installed) == "table" then
-                require('nvim-treesitter.configs').setup(opts)
+            local ensure_installed = { "lua", "toml", "json", "jsonc" }
+            for _, parser in ipairs(ensure_installed) do
+                local has_parser, _ = pcall(vim.treesitter.language.inspect, parser)
+                if not has_parser then
+                    nvim_treesitter.install(parser)
+                end
             end
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = { '<filetype>' },
+                callback = function()
+                    vim.treesitter.start()
+                end
+            })
+            vim.treesitter.start()
         end,
     },
     {
@@ -264,4 +218,30 @@ require("lazy").setup({
 vim.keymap.set('n', '<leader>ff', '<cmd>FzfLua files<cr>', { desc = "(f)ind (f)ile" })
 vim.keymap.set('n', '<leader>fs', '<cmd>FzfLua live_grep<cr>', { desc = '(f)ind (s)tring' })
 vim.keymap.set('n', '<leader>fw', '<cmd>FzfLua grep_cword<cr>', { desc = '(f)ind current (w)ord'})
+
+-- [[ 自动重新加载 ]]
+-- copy from LazyVim
+--local group = vim.api.nvim_create_augroup("LazyVim", { clear = true })
+local function augroup(name)
+  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+end
+
+-- Check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = augroup("checktime"),
+  callback = function()
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
+-- Highlight on yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = augroup("highlight_yank"),
+  callback = function()
+    (vim.hl or vim.highlight).on_yank()
+  end,
+})
+
 
