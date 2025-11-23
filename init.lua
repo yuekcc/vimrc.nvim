@@ -1,8 +1,11 @@
 vim.opt.mouse = 'a'
-vim.opt.updatetime = 250
+vim.opt.updatetime = 200
 vim.opt.timeoutlen = 500
 vim.opt.confirm = true
+vim.opt.termguicolors = true
+
 vim.g.editorconfig = true
+vim.g.markdown_recommended_style = 0 -- fix markdown indentation settings
 
 vim.filetype.add({
   extension = {
@@ -23,6 +26,11 @@ vim.opt.cursorline = true
 vim.opt.foldenable = false
 vim.opt.foldnestmax = 1
 vim.opt.cmdheight = 0
+vim.opt.winminwidth = 5
+vim.opt.wildmode = "longest:full,full"
+vim.opt.list = true
+vim.opt.scrolloff = 4
+vim.opt.smoothscroll = true
 
 vim.opt.guifont = 'Maple Mono Normal NL NF CN:h13'
 
@@ -35,7 +43,8 @@ vim.opt.incsearch = true
 -- [[ 编辑设置 ]]
 
 vim.opt.swapfile = false
-vim.opt.undofile = false
+vim.opt.undofile = true
+vim.opt.undolevels = 1000
 
 vim.schedule(function()
     vim.opt.clipboard = 'unnamedplus'
@@ -45,9 +54,38 @@ vim.opt.breakindent = true
 
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
+vim.opt.shiftround = true
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
+vim.opt.smartindent = true
+vim.opt.smartcase = true
 
+vim.opt.wrap = false -- 自动折行
+
+-- [[ 自动重新加载 ]]
+-- copy from LazyVim
+--local group = vim.api.nvim_create_augroup("LazyVim", { clear = true })
+local function augroup(name)
+  return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true })
+end
+
+-- Check if we need to reload the file when it changed
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = augroup("checktime"),
+  callback = function()
+    if vim.o.buftype ~= "nofile" then
+      vim.cmd("checktime")
+    end
+  end,
+})
+
+-- Highlight on yank
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = augroup("highlight_yank"),
+  callback = function()
+    (vim.hl or vim.highlight).on_yank()
+  end,
+})
 
 -- [[ keymaps ]]
 
@@ -105,12 +143,19 @@ require("lazy").setup({
     },
     {
         "folke/tokyonight.nvim",
-        -- "olimorris/onedarkpro.nvim",
         lazy = false,
         priority = 1000,
     },
     {
-        "echasnovski/mini.pairs",
+        "nvim-mini/mini.cursorword",
+        version = '*',
+        lazy = false,
+        config = function(_, opts)
+            require('mini.cursorword').setup()
+        end
+    },
+    {
+        "nvim-mini/mini.pairs",
         version = '*',
         event = "VeryLazy",
         opts = {
@@ -120,10 +165,14 @@ require("lazy").setup({
             skip_unbalanced = true,
             markdown = true,
         },
+        config = function (_, opts)
+            require('mini.pairs').setup()
+        end
     },
     {
         'saghen/blink.cmp',
         version = '*',
+        event = "InsertEnter",
         dependencies = {
             'mikavilpas/blink-ripgrep.nvim',
         },
