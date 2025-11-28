@@ -169,11 +169,12 @@ require("lazy").setup({
         version = '*',
         event = "InsertEnter",          -- 插入模式时加载
         dependencies = {
+            'xzbdmw/colorful-menu.nvim',
             'mikavilpas/blink-ripgrep.nvim',  -- 依赖的 ripgrep 源
         },
         opts = {
             keymap = { 
-                preset = 'super-tab',   -- 使用 super-tab 键位预设
+                preset = 'super-tab',   -- 使用 super-tab 键位预设。super-tab/enter
             },
             appearance = {
                 use_nvim_cmp_as_default = true,  -- 使用 nvim-cmp 样式
