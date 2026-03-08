@@ -83,6 +83,13 @@ vim.keymap.set('i', '<m-l>', '<right>')     -- 右移
 -- 快速换行
 vim.keymap.set('i', '<S-cr>', '<esc>o')     -- Shift+Enter 在下方新建行
 
+-- Visual模式缩进调整
+vim.keymap.set('v', '<tab>', '>gv')         -- 增加缩进
+vim.keymap.set('v', '<S-tab>', '<gv')       -- 减少缩进
+
+-- Insert模式缩进调整
+vim.keymap.set('i', '<S-tab>', '<C-d>')     -- Shift+Tab 减少缩进 (保留Tab用于补全)
+
 -- 窗口管理
 vim.keymap.set('n', '<C-\\>', '<cmd>vsplit<cr>')    -- 垂直分割窗口
 vim.keymap.set('n', '<C-S-\\>', '<cmd>split<cr>')   -- 水平分割窗口
