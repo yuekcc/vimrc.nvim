@@ -118,31 +118,16 @@ end
 vim.opt.rtp:prepend(lazypath)          -- 将 lazy.nvim 添加到运行时路径
 
 -- 设置插件
-require("lazy").setup({ 
-    -- VS Code 主题
+require("lazy").setup({
+    -- 主题
     {
-        "Mofiqul/vscode.nvim",
-        lazy = false,                   -- 立即加载
-        priority = 1000,                -- 高优先级（确保先加载）
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
         config = function()
-            vim.o.background = 'dark'   -- 默认暗色主题
-            vim.cmd[[colorscheme vscode]]
-            if vim.g.neovide then       -- 如果是 Neovide GUI
-                vim.o.background = 'light'  -- 使用亮色主题
-                vim.cmd[[colorscheme vscode]]
-            end
+            vim.cmd[[colorscheme tokyonight]]
         end
     },
-    -- 注释掉的 Tokyo Night 主题
-    -- {
-    --     "folke/tokyonight.nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         vim.cmd[[colorscheme tokyonight]]
-    --     end
-    -- },
-    
     -- 光标下单词高亮
     {
         "nvim-mini/mini.cursorword",
@@ -152,7 +137,6 @@ require("lazy").setup({
             require('mini.cursorword').setup()
         end
     },
-    
     -- 自动配对符号
     {
         "nvim-mini/mini.pairs",
@@ -258,14 +242,33 @@ require("lazy").setup({
     
     -- 模糊查找工具
     {
-        "ibhagwan/fzf-lua",
-    },
+        'dmtrKovalenko/fff.nvim',
+        build = function()
+            require('fff.download').download_or_build_binary()
+        end,
+        lazy = false,
+        keys = {
+            { "<leader>ff", function() require('fff').find_files() end },
+            { "<leader>fg", function() requrie('fff').live_grep() end },
+            {
+                "<leader>fz", 
+                function()
+                    require('fff').live_grep({
+                        grep = {
+                            modes = { 'fuzzy', 'plain' }
+                        }
+                    })
+                end
+            },
+            {
+                "<leader>fc",
+                function()
+                    require('fff').live_grep({ query = vim.fn.expand("<cword>") })
+                end
+            }
+        }
+    }
 })
-
--- FzfLua 键位映射
-vim.keymap.set('n', '<leader>ff', '<cmd>FzfLua files<cr>', { desc = "(f)ind (f)ile" })        -- 查找文件
-vim.keymap.set('n', '<leader>fs', '<cmd>FzfLua live_grep<cr>', { desc = '(f)ind (s)tring' })  -- 实时搜索文本
-vim.keymap.set('n', '<leader>fw', '<cmd>FzfLua grep_cword<cr>', { desc = '(f)ind current (w)ord'})  -- 查找当前单词
 
 -- [[ 自动命令 ]]
 
