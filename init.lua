@@ -1,3 +1,5 @@
+require('vim._core.ui2').enable({ enable = true })
+
 -- 基本设置
 vim.opt.mouse = 'a'                    -- 启用鼠标支持
 vim.opt.updatetime = 200               -- 写入交换文件的间隔时间（毫秒）
@@ -24,6 +26,8 @@ vim.opt.wildmode = "longest:full,full" -- 命令行补全模式
 vim.opt.list = true                    -- 显示不可见字符（重复设置）
 vim.opt.scrolloff = 4                  -- 上下滚动时保留的行数
 vim.opt.smoothscroll = true            -- 启用平滑滚动
+vim.opt.signcolumn = "yes"             -- 永远显示 sign column（诊断标记）
+vim.opt.winborder = "rounded"          -- 窗口边框样式
 
 -- 字体设置（仅 GUI 版本有效）
 vim.opt.guifont = 'Maple Mono Normal NL NF CN:h13'
@@ -64,6 +68,11 @@ vim.g.maplocalleader = ' '             -- 本地 Leader 键为空格
 
 -- 清除搜索高亮
 vim.keymap.set('n', '<esc>', '<cmd>nohlsearch<cr>')
+
+-- 系统剪贴板
+vim.keymap.set({ "n", "v" }, "<leader>c", '"+y', { desc = "copy to system clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>x", '"+d', { desc = "cut to system clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', { desc = "paste to system clipboard" })
 
 -- 保存和退出
 vim.keymap.set('n', '<leader>w', ':w<cr>')  -- 保存文件
