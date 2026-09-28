@@ -98,6 +98,11 @@ vim.keymap.set('n', '<C-j>', '<C-w>j')              -- 切换到下方窗口
 vim.keymap.set('n', '<C-k>', '<C-w>k')              -- 切换到上方窗口
 vim.keymap.set('n', '<C-l>', '<C-w>l')              -- 切换到右侧窗口
 
+vim.keymap.set("n", "<leader>u", function()
+    vim.cmd([[packadd nvim.undotree]])
+    require("undotree").open()
+end, { desc = "open undotree" })
+
 -- [[ 插件管理 ]]
 
 -- 引导 lazy.nvim 插件管理器
@@ -289,8 +294,9 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
 
 -- 高亮复制文本
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = augroup("highlight_yank"),
-  callback = function()
-    (vim.hl or vim.highlight).on_yank()  -- 短暂高亮复制的文本
-  end,
+    desc = "higtlight copying text",
+    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+    callback = function()
+        vim.highlight.on_yank({ timeout = 500 })
+    end
 })
